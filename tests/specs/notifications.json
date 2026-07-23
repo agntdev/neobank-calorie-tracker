@@ -1,0 +1,72 @@
+[
+  {
+    "name": "notification preferences: toggle, threshold, on-demand summary",
+    "steps": [
+      {
+        "send": { "callback": "setup:start", "chatId": 107 },
+        "expect": [{ "method": "editMessageText" }]
+      },
+      {
+        "send": { "callback": "setup:tz:UTC", "chatId": 107 },
+        "expect": [{ "method": "editMessageText" }]
+      },
+      {
+        "send": { "callback": "setup:budget:alldefaults", "chatId": 107 },
+        "expect": [{ "method": "editMessageText" }]
+      },
+      {
+        "send": { "callback": "setup:period:daily", "chatId": 107 },
+        "expect": [{ "method": "editMessageText" }]
+      },
+      {
+        "send": { "callback": "notif:show", "chatId": 107 },
+        "expect": [
+          {
+            "method": "editMessageText",
+            "payload": {
+              "text": "Your alert settings:\n• Daily summary: 08:00 (your time zone)\n• Low-budget alert: when a category drops below 15%\n• Status: on"
+            }
+          }
+        ]
+      },
+      {
+        "send": { "callback": "notif:toggle", "chatId": 107 },
+        "expect": [
+          {
+            "method": "editMessageText",
+            "payload": { "text": "Alerts are now off." }
+          }
+        ]
+      },
+      {
+        "send": { "callback": "notif:thr", "chatId": 107 },
+        "expect": [
+          {
+            "method": "editMessageText",
+            "payload": { "text": "Alert me when a category drops below…" }
+          }
+        ]
+      },
+      {
+        "send": { "callback": "notif:thrset:20", "chatId": 107 },
+        "expect": [
+          {
+            "method": "editMessageText",
+            "payload": { "text": "Low-budget alert threshold set to 20%." }
+          }
+        ]
+      },
+      {
+        "send": { "callback": "notif:now", "chatId": 107 },
+        "expect": [
+          {
+            "method": "editMessageText",
+            "payload": {
+              "text": "Here's your daily summary:\n\nDining: 0/600 cal — 600 left (100%)\nGroceries: 0/800 cal — 800 left (100%)\nSnacks: 0/300 cal — 300 left (100%)\nDrinks: 0/200 cal — 200 left (100%)\nOther: 0/400 cal — 400 left (100%)\n\nTotal this period: 0 cal"
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

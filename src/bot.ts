@@ -2,11 +2,33 @@ import { Composer } from "grammy";
 import { createBot, type BotContext, type CreateBotOptions } from "./toolkit/index.js";
 import type { StorageAdapter } from "grammy";
 
-// The per-chat session shape (ephemeral conversation state only). Extend as the
-// bot grows. Durable domain data must NOT live here — use the toolkit's
-// persistent storage (see AGENTS.md).
+// The per-chat session shape (EPHEMERAL conversation state only — which step
+// of a multi-step flow the chat is in, plus the in-progress values not yet
+// committed to the durable store). Durable domain data lives in src/store.ts.
 export interface Session {
-  // example: step?: "awaiting_amount";
+  // Onboarding flow.
+  onboard?: {
+    step: "tz" | "tztext" | "budget" | "period";
+    tz?: string;
+    idx?: number;
+    budgets?: Record<string, number>;
+    period?: "daily" | "weekly";
+  };
+  // Transaction logging flow.
+  log?: {
+    step: "desc" | "category" | "calories" | "confirm";
+    desc?: string;
+    category?: string;
+    calories?: number;
+  };
+  // Quick log flow (amount chosen, awaiting category).
+  quick?: { calories?: number };
+  // Notification preference editing.
+  notif?: { step: "time" | "threshold" };
+  // Category budget adjustment flow.
+  adjust?: { idx?: number };
+  // In-progress transaction-calorie edit (transaction id).
+  editId?: string;
 }
 
 export type Ctx = BotContext<Session>;

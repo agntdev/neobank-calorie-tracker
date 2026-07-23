@@ -1,0 +1,149 @@
+[
+  {
+    "name": "owner controls: edit/delete transactions, adjust budgets, export, wipe",
+    "steps": [
+      {
+        "send": { "callback": "setup:start", "chatId": 108 },
+        "expect": [{ "method": "editMessageText" }]
+      },
+      {
+        "send": { "callback": "setup:tz:UTC", "chatId": 108 },
+        "expect": [{ "method": "editMessageText" }]
+      },
+      {
+        "send": { "callback": "setup:budget:alldefaults", "chatId": 108 },
+        "expect": [{ "method": "editMessageText" }]
+      },
+      {
+        "send": { "callback": "setup:period:daily", "chatId": 108 },
+        "expect": [{ "method": "editMessageText" }]
+      },
+      {
+        "send": { "callback": "log:start", "chatId": 108 },
+        "expect": [{ "method": "sendMessage" }]
+      },
+      {
+        "send": { "text": "chicken salad", "chatId": 108 },
+        "expect": [{ "method": "sendMessage" }]
+      },
+      {
+        "send": { "callback": "log:cat:Dining", "chatId": 108 },
+        "expect": [{ "method": "sendMessage" }]
+      },
+      {
+        "send": { "text": "350", "chatId": 108 },
+        "expect": [{ "method": "sendMessage" }]
+      },
+      {
+        "send": { "callback": "log:confirm:yes", "chatId": 108 },
+        "expect": [{ "method": "sendMessage" }]
+      },
+      {
+        "send": { "callback": "manage:show", "chatId": 108 },
+        "expect": [
+          {
+            "method": "editMessageText",
+            "payload": { "text": "Manage your tracker:" }
+          }
+        ]
+      },
+      {
+        "send": { "callback": "manage:txs", "chatId": 108 },
+        "expect": [
+          {
+            "method": "editMessageText",
+            "payload": { "text": "Tap a transaction to edit or delete it." }
+          }
+        ]
+      },
+      {
+        "send": { "callback": "manage:tx:t0", "chatId": 108 },
+        "expect": [{ "method": "editMessageText" }]
+      },
+      {
+        "send": { "callback": "manage:edit:t0", "chatId": 108 },
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": { "text": "Send the new calorie amount (a whole number)." }
+          }
+        ]
+      },
+      {
+        "send": { "text": "250", "chatId": 108 },
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": { "text": "Updated: chicken salad is now 250 cal." }
+          }
+        ]
+      },
+      {
+        "send": { "callback": "view:show", "chatId": 108 },
+        "expect": [
+          {
+            "method": "editMessageText",
+            "payload": {
+              "text": "Here's your budget for this period:\n\nDining: 250/600 cal — 350 left (58%)\nGroceries: 0/800 cal — 800 left (100%)\nSnacks: 0/300 cal — 300 left (100%)\nDrinks: 0/200 cal — 200 left (100%)\nOther: 0/400 cal — 400 left (100%)\n\nTotal logged this period: 250 cal"
+            }
+          }
+        ]
+      },
+      {
+        "send": { "callback": "manage:cat", "chatId": 108 },
+        "expect": [
+          {
+            "method": "editMessageText",
+            "payload": { "text": "Tap a category to change its budget." }
+          }
+        ]
+      },
+      {
+        "send": { "callback": "manage:adj:0", "chatId": 108 },
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": {
+              "text": "Current budget for Dining: 600 cal (daily). Send the new budget as a number."
+            }
+          }
+        ]
+      },
+      {
+        "send": { "text": "500", "chatId": 108 },
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": { "text": "Dining budget is now 500 cal." }
+          }
+        ]
+      },
+      {
+        "send": { "callback": "manage:export", "chatId": 108 },
+        "expect": [{ "method": "editMessageText" }]
+      },
+      {
+        "send": { "callback": "manage:wipe", "chatId": 108 },
+        "expect": [
+          {
+            "method": "editMessageText",
+            "payload": {
+              "text": "Delete ALL your data (profile, categories, transactions, alerts)? This can't be undone."
+            }
+          }
+        ]
+      },
+      {
+        "send": { "callback": "manage:wipe:yes", "chatId": 108 },
+        "expect": [
+          {
+            "method": "editMessageText",
+            "payload": {
+              "text": "All your data has been deleted. Tap ⚙️ Setup to start over."
+            }
+          }
+        ]
+      }
+    ]
+  }
+]
