@@ -1,0 +1,66 @@
+[
+  {
+    "name": "/cancel when no flow is active",
+    "steps": [
+      {
+        "send": { "text": "/cancel", "chatId": 113 },
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": { "text": "Cancelled. Tap a button to continue." }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "/cancel aborts in-progress log flow",
+    "steps": [
+      {
+        "send": { "callback": "setup:start", "chatId": 114 },
+        "expect": [{ "method": "editMessageText" }]
+      },
+      {
+        "send": { "callback": "setup:tz:UTC", "chatId": 114 },
+        "expect": [{ "method": "editMessageText" }]
+      },
+      {
+        "send": { "callback": "setup:budget:alldefaults", "chatId": 114 },
+        "expect": [{ "method": "editMessageText" }]
+      },
+      {
+        "send": { "callback": "setup:period:daily", "chatId": 114 },
+        "expect": [{ "method": "editMessageText" }]
+      },
+      {
+        "send": { "callback": "log:start", "chatId": 114 },
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": {
+              "text": "What did you have? Send a short description, like 'chicken salad' or 'morning coffee'."
+            }
+          }
+        ]
+      },
+      {
+        "send": { "text": "test meal", "chatId": 114 },
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": { "text": "Which category does it go in?" }
+          }
+        ]
+      },
+      {
+        "send": { "text": "/cancel", "chatId": 114 },
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": { "text": "Cancelled. Tap a button to continue." }
+          }
+        ]
+      }
+    ]
+  }
+]
