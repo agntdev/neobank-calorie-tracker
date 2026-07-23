@@ -1,0 +1,49 @@
+[
+  {
+    "name": "end-to-end onboarding sets up budgets",
+    "steps": [
+      {
+        "send": { "callback": "setup:start", "chatId": 1 },
+        "expect": [
+          {
+            "method": "editMessageText",
+            "payload": {
+              "text": "First, your time zone — so budgets reset at the right local time. Pick yours or type it (e.g. Europe/London)."
+            }
+          }
+        ]
+      },
+      {
+        "send": { "callback": "setup:tz:UTC", "chatId": 1 },
+        "expect": [
+          {
+            "method": "editMessageText",
+            "payload": {
+              "text": "Set a daily calorie budget for Dining (suggested 600). Send a number, or use a button below. (1/5)"
+            }
+          }
+        ]
+      },
+      {
+        "send": { "callback": "setup:budget:alldefaults", "chatId": 1 },
+        "expect": [
+          {
+            "method": "editMessageText",
+            "payload": { "text": "Last step — how often should budgets reset?" }
+          }
+        ]
+      },
+      {
+        "send": { "callback": "setup:period:daily", "chatId": 1 },
+        "expect": [
+          {
+            "method": "editMessageText",
+            "payload": {
+              "text": "All set — your calorie tracker is ready. Tap /start anytime to log a meal or check your budget."
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

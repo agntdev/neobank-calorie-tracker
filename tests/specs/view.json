@@ -1,19 +1,71 @@
 [
   {
-    "name": "/view",
+    "name": "view before setup prompts setup",
     "steps": [
       {
+        "send": { "text": "/view", "chatId": 105 },
         "expect": [
           {
             "method": "sendMessage",
             "payload": {
-              "text": "Show current budget status"
+              "text": "Set up your tracker first — tap ⚙️ Setup to choose your budgets."
             }
           }
-        ],
-        "send": {
-          "text": "/view"
-        }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "view shows per-category budget status with optional filter",
+    "steps": [
+      {
+        "send": { "callback": "setup:start", "chatId": 106 },
+        "expect": [{ "method": "editMessageText" }]
+      },
+      {
+        "send": { "callback": "setup:tz:UTC", "chatId": 106 },
+        "expect": [{ "method": "editMessageText" }]
+      },
+      {
+        "send": { "callback": "setup:budget:alldefaults", "chatId": 106 },
+        "expect": [{ "method": "editMessageText" }]
+      },
+      {
+        "send": { "callback": "setup:period:daily", "chatId": 106 },
+        "expect": [{ "method": "editMessageText" }]
+      },
+      {
+        "send": { "callback": "view:show", "chatId": 106 },
+        "expect": [
+          {
+            "method": "editMessageText",
+            "payload": {
+              "text": "Here's your budget for this period:\n\nDining: 0/600 cal — 600 left (100%)\nGroceries: 0/800 cal — 800 left (100%)\nSnacks: 0/300 cal — 300 left (100%)\nDrinks: 0/200 cal — 200 left (100%)\nOther: 0/400 cal — 400 left (100%)\n\nTotal logged this period: 0 cal"
+            }
+          }
+        ]
+      },
+      {
+        "send": { "text": "/view Dining", "chatId": 106 },
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": {
+              "text": "Here's your budget for this period:\n\nDining: 0/600 cal — 600 left (100%)\n\nTotal logged this period: 0 cal"
+            }
+          }
+        ]
+      },
+      {
+        "send": { "text": "/view Nope", "chatId": 106 },
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": {
+              "text": "Couldn't find a category called \"Nope\". Try /view to see all of them."
+            }
+          }
+        ]
       }
     ]
   }

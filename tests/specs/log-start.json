@@ -1,19 +1,100 @@
 [
   {
-    "name": "Log Transaction",
+    "name": "logging before setup prompts setup",
     "steps": [
       {
+        "send": { "callback": "log:start", "chatId": 101 },
         "expect": [
           {
             "method": "sendMessage",
             "payload": {
-              "text": "Begin transaction logging flow"
+              "text": "Let's set up your tracker first — tap ⚙️ Setup to choose your time zone and budgets."
             }
           }
-        ],
-        "send": {
-          "callback": "log:start"
-        }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "log a meal end to end with category assignment",
+    "steps": [
+      {
+        "send": { "callback": "setup:start", "chatId": 102 },
+        "expect": [{ "method": "editMessageText" }]
+      },
+      {
+        "send": { "callback": "setup:tz:UTC", "chatId": 102 },
+        "expect": [{ "method": "editMessageText" }]
+      },
+      {
+        "send": { "callback": "setup:budget:alldefaults", "chatId": 102 },
+        "expect": [{ "method": "editMessageText" }]
+      },
+      {
+        "send": { "callback": "setup:period:daily", "chatId": 102 },
+        "expect": [{ "method": "editMessageText" }]
+      },
+      {
+        "send": { "callback": "log:start", "chatId": 102 },
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": {
+              "text": "What did you have? Send a short description, like 'chicken salad' or 'morning coffee'."
+            }
+          }
+        ]
+      },
+      {
+        "send": { "text": "chicken salad", "chatId": 102 },
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": { "text": "Which category does it go in?" }
+          }
+        ]
+      },
+      {
+        "send": { "callback": "log:cat:Dining", "chatId": 102 },
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": {
+              "text": "How many calories for \"chicken salad\" in Dining? Send a number."
+            }
+          }
+        ]
+      },
+      {
+        "send": { "text": "abc", "chatId": 102 },
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": { "text": "Send a whole number of calories (1–100000). Try again." }
+          }
+        ]
+      },
+      {
+        "send": { "text": "350", "chatId": 102 },
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": {
+              "text": "Log this meal?\n\nchicken salad\nDining · 350 cal"
+            }
+          }
+        ]
+      },
+      {
+        "send": { "callback": "log:confirm:yes", "chatId": 102 },
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": {
+              "text": "Logged: chicken salad · Dining · 350 cal\n\nTap 📊 Status for your full budget, or ➕ Log meal to add another."
+            }
+          }
+        ]
       }
     ]
   }

@@ -1,19 +1,65 @@
 [
   {
-    "name": "Quick Log",
+    "name": "quick log before setup prompts setup",
     "steps": [
       {
+        "send": { "callback": "quicklog:show", "chatId": 103 },
         "expect": [
           {
-            "method": "sendMessage",
+            "method": "editMessageText",
+            "payload": { "text": "Set up your tracker first — tap ⚙️ Setup." }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "quick log a preset amount into a category",
+    "steps": [
+      {
+        "send": { "callback": "setup:start", "chatId": 104 },
+        "expect": [{ "method": "editMessageText" }]
+      },
+      {
+        "send": { "callback": "setup:tz:UTC", "chatId": 104 },
+        "expect": [{ "method": "editMessageText" }]
+      },
+      {
+        "send": { "callback": "setup:budget:alldefaults", "chatId": 104 },
+        "expect": [{ "method": "editMessageText" }]
+      },
+      {
+        "send": { "callback": "setup:period:daily", "chatId": 104 },
+        "expect": [{ "method": "editMessageText" }]
+      },
+      {
+        "send": { "callback": "quicklog:show", "chatId": 104 },
+        "expect": [
+          {
+            "method": "editMessageText",
+            "payload": { "text": "Pick a calorie amount to log fast:" }
+          }
+        ]
+      },
+      {
+        "send": { "callback": "quicklog:amt:200", "chatId": 104 },
+        "expect": [
+          {
+            "method": "editMessageText",
+            "payload": { "text": "200 cal — which category?" }
+          }
+        ]
+      },
+      {
+        "send": { "callback": "quicklog:cat:Dining", "chatId": 104 },
+        "expect": [
+          {
+            "method": "editMessageText",
             "payload": {
-              "text": "Access preset calorie amounts and recent categories"
+              "text": "Logged: 200 cal in Dining\n\nTap 📊 Status for your full budget."
             }
           }
-        ],
-        "send": {
-          "callback": "quicklog:show"
-        }
+        ]
       }
     ]
   }

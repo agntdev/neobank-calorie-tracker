@@ -1,0 +1,99 @@
+[
+  {
+    "name": "low-budget alerts surface inline, multiple in one day",
+    "steps": [
+      {
+        "send": { "callback": "setup:start", "chatId": 109 },
+        "expect": [{ "method": "editMessageText" }]
+      },
+      {
+        "send": { "callback": "setup:tz:UTC", "chatId": 109 },
+        "expect": [{ "method": "editMessageText" }]
+      },
+      {
+        "send": { "callback": "setup:budget:alldefaults", "chatId": 109 },
+        "expect": [{ "method": "editMessageText" }]
+      },
+      {
+        "send": { "callback": "setup:period:daily", "chatId": 109 },
+        "expect": [{ "method": "editMessageText" }]
+      },
+      {
+        "send": { "callback": "notif:show", "chatId": 109 },
+        "expect": [{ "method": "editMessageText" }]
+      },
+      {
+        "send": { "callback": "notif:thr", "chatId": 109 },
+        "expect": [
+          {
+            "method": "editMessageText",
+            "payload": { "text": "Alert me when a category drops below…" }
+          }
+        ]
+      },
+      {
+        "send": { "callback": "notif:thrset:50", "chatId": 109 },
+        "expect": [
+          {
+            "method": "editMessageText",
+            "payload": { "text": "Low-budget alert threshold set to 50%." }
+          }
+        ]
+      },
+      {
+        "send": { "callback": "log:start", "chatId": 109 },
+        "expect": [{ "method": "sendMessage" }]
+      },
+      {
+        "send": { "text": "pizza", "chatId": 109 },
+        "expect": [{ "method": "sendMessage" }]
+      },
+      {
+        "send": { "callback": "log:cat:Dining", "chatId": 109 },
+        "expect": [{ "method": "sendMessage" }]
+      },
+      {
+        "send": { "text": "350", "chatId": 109 },
+        "expect": [{ "method": "sendMessage" }]
+      },
+      {
+        "send": { "callback": "log:confirm:yes", "chatId": 109 },
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": {
+              "text": "Logged: pizza · Dining · 350 cal\n\nHeads up — you're low on:\n• Dining: 350/600 cal — 250 left (42%)\n\nTap 📊 Status for your full budget, or ➕ Log meal to add another."
+            }
+          }
+        ]
+      },
+      {
+        "send": { "callback": "log:start", "chatId": 109 },
+        "expect": [{ "method": "sendMessage" }]
+      },
+      {
+        "send": { "text": "oats", "chatId": 109 },
+        "expect": [{ "method": "sendMessage" }]
+      },
+      {
+        "send": { "callback": "log:cat:Groceries", "chatId": 109 },
+        "expect": [{ "method": "sendMessage" }]
+      },
+      {
+        "send": { "text": "500", "chatId": 109 },
+        "expect": [{ "method": "sendMessage" }]
+      },
+      {
+        "send": { "callback": "log:confirm:yes", "chatId": 109 },
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": {
+              "text": "Logged: oats · Groceries · 500 cal\n\nHeads up — you're low on:\n• Dining: 350/600 cal — 250 left (42%)\n• Groceries: 500/800 cal — 300 left (38%)\n\nTap 📊 Status for your full budget, or ➕ Log meal to add another."
+            }
+          }
+        ]
+      }
+    ]
+  }
+]
